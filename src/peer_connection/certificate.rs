@@ -3,7 +3,7 @@ use crate::error::{Error, Result};
 use crate::peer_connection::math_rand_alpha;
 
 use dtls::crypto::{CryptoPrivateKey, CryptoPrivateKeyKind};
-use rcgen::{CertificateParams, KeyPair, RcgenError};
+use rcgen::{CertificateParams, KeyPair, RcgenError, date_time_ymd};
 use ring::signature::{EcdsaKeyPair, Ed25519KeyPair, RsaKeyPair};
 use sha2::{Digest, Sha256};
 use std::ops::Add;
@@ -139,6 +139,7 @@ impl RTCCertificate {
         } else {
             return Err(Error::new("Unsupported key_pair".to_owned()));
         };
+        params.not_after = date_time_ymd(2035, 01, 01);
         params.key_pair = Some(key_pair);
 
         /*log::debug!(
